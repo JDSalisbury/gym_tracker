@@ -21,13 +21,14 @@ oauth.register(
 
 
 @r.get("/user/{user_id}")
-async def get_info(user_id: int):
+async def get_info(request: Request, user_id: int):
+    print('Session info?', request.session.get('user'))
     return {"message": f"user info for user: {user_id}"}
 
 
 @r.route('/login')
 async def login(request: Request):
-    redirect_uri = request.url_for('logged_in')
+    redirect_uri = request.url_for('auth2')
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 
@@ -35,6 +36,7 @@ async def login(request: Request):
 async def auth2(request: Request):
     try:
         token = await oauth.google.authorize_access_token(request)
+        print("Token", token)
     except OAuthError as error:
         return HTMLResponse(f'<h1>{error.error}</h1>')
     user = token.get('userinfo')
@@ -45,5 +47,5 @@ async def auth2(request: Request):
 
 @r.get('/logged_in')
 async def logged_in(request: Request):
-    print(request.session['user'])
+    print("SESSION", request.session)
     return {'status': 'Logged In'}
