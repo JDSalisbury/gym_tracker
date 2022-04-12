@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  api:
+    container_name: strong_api
+    build: ./
+    command: uvicorn app.main:app --host 0.0.0.0
+    volumes:
+      - .:/code
+    ports:
+      - 8000:8000
+
+    # middlewares-oauth:
+    #   forwardAuth:
+    #     address: "http://0.0.0.0:8000/auth2"
+    #     trustForwardHeader: true
