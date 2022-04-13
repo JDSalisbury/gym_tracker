@@ -9,7 +9,7 @@ services:
       - .:/code
     ports:
       - 8000:8000
-
+    privileged: true
     # middlewares-oauth:
     #   forwardAuth:
     #     address: "http://0.0.0.0:8000/auth2"

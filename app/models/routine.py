@@ -1,4 +1,5 @@
 from datetime import date, datetime, time
+from lib2to3.pytree import Base
 from pydantic import BaseModel, Field
 from typing import Optional
 
@@ -18,6 +19,10 @@ class Workout(BaseModel):
     reps: Optional[str] = None
     time: Optional[time] = None
     date: Optional[datetime] = None
+
+
+class Routine(BaseModel):
+    day: str = Field()
 
 
 def ResponseModel(data, message):

@@ -28,7 +28,7 @@ async def get_info(request: Request, user_id: int):
 
 @r.route('/login')
 async def login(request: Request):
-    redirect_uri = request.url_for('auth2')
+    redirect_uri = request.url_for('logged_in')
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 
