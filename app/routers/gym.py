@@ -19,7 +19,7 @@ async def add_workout(request: Request, workout: Workout = Body(...)):
     workout.date = datetime.datetime.now()
     workout.sub = request.session['user']['sub']
 
-    new_workout = await database.add_workout(workout.dict())
+    new_workout = await database.db_add(database.WORKOUT_DB, workout.dict())
 
     return routine.ResponseModel(new_workout, "Workout added Correctly")
 
@@ -36,6 +36,6 @@ async def reg_machine(request: Request, mech: Machine = Body(...)):
         'last_used': today
     }
 
-    new_mech = await database.add_machine(mech2)
+    new_mech = await database.db_add(database.MACHINE_DB, mech2)
 
     return routine.ResponseModel(new_mech, "Machine registerd Correctly")

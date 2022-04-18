@@ -36,13 +36,18 @@ def workout_helper(workout) -> dict:
     }
 
 
-async def add_machine(machine_data: dict) -> dict:
-    machine = await machine_collection.insert_one(machine_data)
-    new_machine = await machine_collection.find_one({"_id": machine.inserted_id})
-    return machine_helper(new_machine)
+MACHINE_DB = {
+    'collection': machine_collection,
+    'helper': machine_helper
+}
+
+WORKOUT_DB = {
+    'collection': workout_collection,
+    'helper': workout_helper
+}
 
 
-async def add_workout(workout_data: dict) -> dict:
-    workout = await workout_collection.insert_one(workout_data)
-    new_workout = await workout_collection.find_one({"_id": workout.inserted_id})
-    return workout_helper(new_workout)
+async def db_add(collection_info: dict, item_data: dict) -> dict:
+    collection_item = await collection_info['collection'].insert_one(item_data)
+    new_collection_item = await collection_info['collection'].find_one({"_id": collection_item.inserted_id})
+    return collection_info['helper'](new_collection_item)
