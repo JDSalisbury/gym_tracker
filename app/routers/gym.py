@@ -27,15 +27,10 @@ async def add_workout(request: Request, workout: Workout = Body(...)):
 @r.post('/reg_machine')
 async def reg_machine(request: Request, mech: Machine = Body(...)):
 
-    today = datetime.datetime.now()
-    mech2 = {
-        'sub': request.session['user']['sub'],
-        'name': mech.name,
-        'target_day': mech.target_day,
-        'set_date': today,
-        'last_used': today
-    }
+    mech.set_date = datetime.datetime.now()
+    mech.last_used = datetime.datetime.now()
+    mech.sub = request.session['user']['sub']
 
-    new_mech = await database.db_add(database.MACHINE_DB, mech2)
+    new_mech = await database.db_add(database.MACHINE_DB, mech.dict())
 
     return routine.ResponseModel(new_mech, "Machine registerd Correctly")
